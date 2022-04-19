@@ -1,7 +1,19 @@
 from abc import ABC
 from random import randint
 from collections import Counter
-from keymapper import key_map
+
+
+def key_map(in_fun):
+    def g_args(self, key=None):
+        if self.key == None:
+            self.key = self.__gen_key__()
+        if key == None:
+            key = self.key
+        return in_fun(self, key)
+    g_args.__name__ = in_fun.__name__
+    g_args.__doc__ = in_fun.__doc__
+    g_args.__module__ = in_fun.__module__
+    return g_args
 
 
 class SimpleCode(ABC):
@@ -35,27 +47,6 @@ class SimpleCode(ABC):
 
     def decode():
         pass
-    '''
-    __eng_freq__ = {
-        'a': 8.17, 'b': 1.4, 'c': 2.78, 'd': 4.25, 'e': 12.7, 'f': 2.23, 'g': 2.02, 'h': 6.09,
-        'i': 6.97, 'j':  0.15, 'k': 0.77, 'l': 4.03, 'm': 2.41, 'n': 6.75, 'o':  7.51, 'p':  1.93,
-        'q': 0.10, 'r': 5.99, 's': 6.33, 't':  9.06, 'u': 2.76, 'v': 0.98, 'w': 2.36, 'x': 0.15,
-        'y': 1.97, 'z': 0.07
-    }
-
-    __rus_freq__ = {
-        'о': 9.28, 'а': 8.66, 'е': 8.10, 'и': 7.45, 'н': 6.35, 'т': 6.30, 'р': 5.53, 'с': 5.45,
-        'л': 4.32, 'в': 4.19, 'к': 3.47, 'п': 3.35, 'м': 3.29, 'у': 2.90, 'д': 2.56, 'я': 2.22,
-        'ы': 2.11, 'ь': 1.90, 'з': 1.81, 'б': 1.51, 'г': 1.41, 'й': 1.31, 'ч': 1.27, 'ю': 1.03,
-        'х': 0.92, 'ж': 0.78, 'ш': 0.77, 'ц': 0.52, 'щ': 0.49, 'ф': 0.40, 'э': 0.17, 'ъ': 0.04,
-        'ё': 0.04
-    }
-
-    __lang__ = {
-        'Numbers': ('0123456789', '0123456789'),
-        'English': ('abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', __eng_freq__),
-        'Russian': ('абвгдеёжзийклмнопрстуфхцчшщъыьэюя', 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ', __rus_freq__)
-    }'''
 
 
 class Caesar(SimpleCode):
@@ -74,16 +65,16 @@ class Caesar(SimpleCode):
     @key_map
     def code(self, key=None) -> str:
         self.uncoded = True
-        key=int(key)
+        key = int(key)
         return ''.join([self.__change_let__(l, key) for l in self.text])
 
     @key_map
     def decode(self, key=None) -> str:
         self.uncoded = False
-        key=int(key)
+        key = int(key)
         return ''.join([self.__change_let__(l, key) for l in self.text])
 
-    def show_all(self)->list:
+    def show_all(self) -> list:
         for lan in self.__lang__.values():
             if list(filter(str.isalpha, list(self.text)))[0].lower() in lan[0]:
                 lf = lan[2]
@@ -93,7 +84,8 @@ class Caesar(SimpleCode):
 
         def metric(string, lang) -> int:
             count = Counter(string)
-            freq = sum([abs(lang[l]-(count[l]/len(string))*100) for l in lang.keys()])
+            freq = sum([abs(lang[l]-(count[l]/len(string))*100)
+                       for l in lang.keys()])
             return freq
 
         for lan in self.__lang__.values():
@@ -102,7 +94,6 @@ class Caesar(SimpleCode):
         metrics = [metric(self.decode(i), lf) for i in range(len(lf))]
         self.key = metrics.index(min(metrics))
         return self.decode()
-()
 
 
 class Vigenere(SimpleCode):
@@ -136,14 +127,15 @@ class Vigenere(SimpleCode):
         pack = list(zip(self.text, self.key*(len(self.text)//len(self.key)+1)))
         return ''.join([self.__change_let__(pair) for pair in pack])
 
+
 class Vernam():
-    
+
     def __init__(self, text, key=None):
         self.text = text
         self.key = key
         if key and key[0].isalpha():
             self.key = ' '.join(str(ord(l)) for l in self.key)
-    
+
     def __gen_key__(self) -> str:
         lis = [str(randint(0, 111206)) for i in range(len(self.text))]
         return ' '.join(lis)

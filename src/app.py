@@ -1,18 +1,20 @@
 from tkinter import *
 import CodeIt
 
+
 class arg():
-    key=None
-    out=None
-    inp=None
-    mode=None
-    scr=None
+    key = None
+    out = None
+    inp = None
+    mode = None
+    scr = None
+
 
 def start(a):
     types = {
-        'caesar' : CodeIt.Caesar,
+        'caesar': CodeIt.Caesar,
         'vigenere': CodeIt.Vigenere,
-        'vernam':CodeIt.Vernam
+        'vernam': CodeIt.Vernam
     }
 
     scr = types[a.scr]
@@ -25,21 +27,22 @@ def start(a):
     else:
         key = None
     Temp = scr(text, key)
-    if (a.mode=='c'):
+    if (a.mode == 'c'):
         with open(a.out, 'w') as out:
             out.write(Temp.code())
-        if a.key==None:
+        if a.key == None:
             with open('/'.join(a.out.split('/')[0:-1])+'/'+'key.txt', 'w') as key:
                 key.write(str(Temp.key))
-    if (a.mode=='d'):
+    if (a.mode == 'd'):
         with open(a.out, 'w') as out:
             out.write(Temp.decode())
-    if (a.mode=='h'):
+    if (a.mode == 'h'):
         with open(a.out, 'w') as out:
             out.write(str(Temp.intel_hack()))
-        if a.key==None:
+        if a.key == None:
             with open('/'.join(a.out.split('/')[0:-1])+'/'+'key.txt', 'w') as key:
                 key.write(str(Temp.key))
+
 
 window = Tk()
 
@@ -49,6 +52,7 @@ outpu = StringVar()
 
 keyp = StringVar()
 ar = arg()
+
 
 def code():
     change()
@@ -79,11 +83,11 @@ def hack():
 
 def change():
     if var.get() == 0:
-        ar.scr='caesar'
+        ar.scr = 'caesar'
     elif var.get() == 1:
-        ar.scr='vigenere'
+        ar.scr = 'vigenere'
     elif var.get() == 2:
-        ar.scr='vernam'
+        ar.scr = 'vernam'
 
 
 var = IntVar()

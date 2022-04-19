@@ -39,10 +39,10 @@ parser.add_argument(
 )
 
 types = {
-    'caesar' : CodeIt.Caesar,
+    'caesar': CodeIt.Caesar,
     'vigenere': CodeIt.Vigenere,
-    'vernam':CodeIt.Vernam
-    }
+    'vernam': CodeIt.Vernam
+}
 
 args = parser.parse_args()
 scr = types[args.scr]
@@ -54,20 +54,22 @@ if args.key:
 else:
     key = None
 Temp = scr(text, key)
-if (args.mode=='c'):
+if (args.mode == 'c'):
     with open(args.out, 'w') as out:
         out.write(Temp.code())
-    if args.key==None:
+    if args.key == None:
         with open('/'.join(args.out.split('/')[0:-1])+'/'+'key.txt', 'w') as key:
             key.write(str(Temp.key))
-            print(f"Key written to {'/'.join(args.out.split('/')[0:-1])+'/'+'key.txt'}")
-if (args.mode=='d'):
+            print(
+                f"Key written to {'/'.join(args.out.split('/')[0:-1])+'/'+'key.txt'}")
+if (args.mode == 'd'):
     with open(args.out, 'w') as out:
         out.write(Temp.decode())
-if (args.mode=='h'):
+if (args.mode == 'h'):
     with open(args.out, 'w') as out:
         out.write(str(Temp.intel_hack()))
-    if args.key==None:
+    if args.key == None:
         with open('/'.join(args.out.split('/')[0:-1])+'/'+'key.txt', 'w') as key:
             key.write(str(Temp.key))
-            print(f"Key written to {'/'.join(args.out.split('/')[0:-1])+'/'+'key.txt'}")
+            print(
+                f"Key written to {'/'.join(args.out.split('/')[0:-1])+'/'+'key.txt'}")

@@ -1,7 +1,9 @@
-from tkinter import *
-import CodeIt
+### работа через приложение ###
 
+import tkinter as tk
+import src.launcher as launcher
 
+### набор, задающий параметры запуска
 class arg():
     key = None
     out = None
@@ -9,117 +11,95 @@ class arg():
     mode = None
     scr = None
 
+### класс графического интерфейса
+class app():
+    def __init__(self):
+        self.window = tk.Tk()
+        self.inpu = tk.StringVar()
+        self.outpu = tk.StringVar()
+        self.keyp = tk.StringVar()
+        self.ar = arg()
+        self.code_type = tk.IntVar()
+        self.window.title("CodeIt")
+        self.window.geometry('380x110')
+        self.interface()
 
-def start(a):
-    types = {
-        'caesar': CodeIt.Caesar,
-        'vigenere': CodeIt.Vigenere,
-        'vernam': CodeIt.Vernam
-    }
+    ### запускает модуль в режиме кодирование
+    def code(self):
+        self.change()
+        self.ar.mode = 'c'
+        self.ar.inp = self.inpu.get()
+        self.ar.out = self.outpu.get()
+        self.ar.key = self.keyp.get()
+        launcher.use(self.ar)
 
-    scr = types[a.scr]
-    print(a.scr, a.inp, a.out, a.mode, a.key)
-    with open(a.inp, 'r') as inp:
-        text = inp.read()
-    if a.key:
-        with open(a.key, 'r') as key_f:
-            key = key_f.read()
-    else:
-        key = None
-    Temp = scr(text, key)
-    if (a.mode == 'c'):
-        with open(a.out, 'w') as out:
-            out.write(Temp.code())
-        if a.key == None:
-            with open('/'.join(a.out.split('/')[0:-1])+'/'+'key.txt', 'w') as key:
-                key.write(str(Temp.key))
-    if (a.mode == 'd'):
-        with open(a.out, 'w') as out:
-            out.write(Temp.decode())
-    if (a.mode == 'h'):
-        with open(a.out, 'w') as out:
-            out.write(str(Temp.intel_hack()))
-        if a.key == None:
-            with open('/'.join(a.out.split('/')[0:-1])+'/'+'key.txt', 'w') as key:
-                key.write(str(Temp.key))
+    ### запускает в режиме декодирования
+    def decode(self):
+        self.change()
+        self.ar.mode = 'd'
+        self.ar.inp = self.inpu.get()
+        self.ar.out = self.outpu.get()
+        self.ar.key = self.keyp.get()
+        launcher.use(self.ar)
 
+    ### взлом цезаря
+    def hack(self):
+        self.change()
+        self.ar.mode = 'h'
+        self.ar.inp = self.inpu.get()
+        self.ar.out = self.outpu.get()
+        self.ar.key = self.keyp.get()
+        launcher.use(self.ar)
 
-window = Tk()
+    ### изменение типа кодирования нажатием кнопки
+    def change(self):
+        if self.code_type.get() == 0:
+            self.ar.scr = 'caesar'
+        elif self.code_type.get() == 1:
+            self.ar.scr = 'vigenere'
+        elif self.code_type.get() == 2:
+            self.ar.scr = 'vernam'
 
-inpu = StringVar()
+    ### расположение сетки интерфейса 
+    def grid_create(self):
+        col = 0
+        self.inl.grid(column=col, row=0)
+        self.oul.grid(column=col, row=1)
+        self.kl.grid(column=col, row=2)
+        col+=1
+        self.in_file.grid(column=col, row=0)
+        self.out_file.grid(column=col, row=1)
+        self.key_file.grid(column=col, row=2)
+        col+=1
+        self.caesar.grid(column=col, row=0)
+        self.vernam.grid(column=col, row=2)
+        self.vegenere.grid(column=col, row=1)
+        col+=1
+        self.btn_hack.grid(column=col, row=2)
+        self.btn_code.grid(column=col, row=0)
+        self.btn_decode.grid(column=col, row=1)
 
-outpu = StringVar()
+    ### инициализация интерфейсаы
+    def interface(self):
+        self.code_type.set(0)
+        self.caesar = tk.Radiobutton(text="Caesar",
+                                     variable=self.code_type, value=0)
+        self.vegenere = tk.Radiobutton(text="Vigenere",
+                                       variable=self.code_type, value=1)
+        self.vernam = tk.Radiobutton(text="Vernam",
+                                     variable=self.code_type, value=2)
+        self.inl = tk.Label(self.window, text="input")
+        self.oul = tk.Label(self.window, text="output")
+        self.kl = tk.Label(self.window, text="key")
+        self.btn_code = tk.Button(
+            self.window, text=' Code ', command=self.code)
+        self.btn_decode = tk.Button(
+            self.window, text='Decode', command=self.decode)
+        self.btn_hack = tk.Button(
+            self.window, text=' Hack ', command=self.hack)
+        self.in_file = tk.Entry(self.window, textvariable=self.inpu)
+        self.out_file = tk.Entry(self.window, textvariable=self.outpu)
+        self.key_file = tk.Entry(self.window, textvariable=self.keyp)
+        self.grid_create()
+        self.window.mainloop()
 
-keyp = StringVar()
-ar = arg()
-
-
-def code():
-    change()
-    ar.mode = 'c'
-    ar.inp = inpu.get()
-    ar.out = outpu.get()
-    ar.key = keyp.get()
-    start(ar)
-
-
-def decode():
-    change()
-    ar.mode = 'd'
-    ar.inp = inpu.get()
-    ar.out = outpu.get()
-    ar.key = keyp.get()
-    start(ar)
-
-
-def hack():
-    change()
-    ar.mode = 'h'
-    ar.inp = inpu.get()
-    ar.out = outpu.get()
-    ar.key = keyp.get()
-    start(ar)
-
-
-def change():
-    if var.get() == 0:
-        ar.scr = 'caesar'
-    elif var.get() == 1:
-        ar.scr = 'vigenere'
-    elif var.get() == 2:
-        ar.scr = 'vernam'
-
-
-var = IntVar()
-var.set(0)
-caesar = Radiobutton(text="Caesar",
-                     variable=var, value=0)
-vegenere = Radiobutton(text="Vigenere",
-                       variable=var, value=1)
-vernam = Radiobutton(text="Vernam",
-                     variable=var, value=2)
-
-window.title("CodeIt")
-window.geometry('380x110')
-inl = Label(text="input")
-oul = Label(text="output")
-kl = Label(text="key")
-btn_code = Button(window, text=' Code ', command=code)
-btn_decode = Button(window, text='Decode', command=decode)
-btn_hack = Button(window, text=' Hack ', command=hack)
-in_file = Entry(window, textvariable=inpu)
-out_file = Entry(window, textvariable=outpu)
-key_file = Entry(window, textvariable=keyp)
-btn_hack.grid(column=4, row=2)
-btn_code.grid(column=4, row=0)
-btn_decode.grid(column=4, row=1)
-in_file.grid(column=1, row=0)
-out_file.grid(column=1, row=1)
-key_file.grid(column=1, row=2)
-caesar.grid(column=2, row=0)
-vernam.grid(column=2, row=2)
-vegenere.grid(column=2, row=1)
-inl.grid(column=0, row=0)
-oul.grid(column=0, row=1)
-kl.grid(column=0, row=2)
-window.mainloop()

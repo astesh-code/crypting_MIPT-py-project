@@ -26,18 +26,18 @@
 ## Usage examples
 Cipher with Caesar method. Original text in _in.txt_, key in _key.txt_, output will be in _out.txt_ :
  ```
- python3 CodeIt_console.py -m c -type caesar -i in.txt -o out.txt -k key.txt
+ python3 main.py -m c -type caesar -i in.txt -o out.txt -k key.txt
  ```
 Use Vernam method to cipher _input.txt_ file to _outplut.txt_. Key will be generated automatically and written to _key.txt_:
  ```
- python3 CodeIt_console.py --mode c --type vernam --input input.txt --output output.txt
+ python3 main.py --mode c --type vernam --input input.txt --output output.txt
  ```
 Decipher Vigenere-coding file with _key.txt_ key:
  ```
- python3 CodeIt_console.py -m d -type Vigenere -i in.txt -o out.txt -k key.txt
+ python3 main.py -m d -type Vigenere -i in.txt -o out.txt -k key.txt
  ```
 Attemplt to hack Caesar-ciphering file. Found key will be written to _key.txt_, text to _out.txt_:
  ```
- python3 CodeIt_console.py -m h -type caesar -i in.txt -o out.txt
+ python3 main.py -m h -type caesar -i in.txt -o out.txt
  ```
 

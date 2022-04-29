@@ -1,12 +1,12 @@
-### основной модуль реализующий шифрование ###
+### main code module ###
 
 from abc import ABC
 from collections import Counter
 from random import randint
 from src.Globals import Globals
 
-### декоратор, определяющий задан ли ключ и генерирующий его
 def key_map(in_fun):
+    """check if key exist and generate it"""
     def g_args(self, key=None):
         if self.key == None:
             self.key = self.__gen_key__()
@@ -18,21 +18,22 @@ def key_map(in_fun):
     g_args.__module__ = in_fun.__module__
     return g_args
 
-### базовый класс для шифра Цезаря и шифра Виженера
 class SimpleCode(ABC):
+    """base class for Caesar and Vigenere"""
     text = None
     key = None
     uncoded = True
 
     def __init__(self, text, key=None):
+        """create new code unit"""
         self.text = text
         self.key = key
-        self.__eng_freq__ = Globals.ENG_FREQ
-        self.__rus_freq__ = Globals.RUS_FREQ
-        self.__lang__ = Globals.LANG
+        self.__eng_freq__ = Globals.eng_freq
+        self.__rus_freq__ = Globals.rus_freq
+        self.__lang__ = Globals.lang
 
-    ### определение, к какому алфавиту принадлежит буква
     def __def_alph__(self, letter) -> str:
+        """define alphabet of letter"""
         for alph in self.__lang__.values():
             if letter in alph[0]:
                 return alph[0]
@@ -41,27 +42,27 @@ class SimpleCode(ABC):
         else:
             return None
 
-    ### сгенерировать ключ, если не задан
     def __gen_key__():
+        """generate new key"""
         pass
 
-    ### прибавить ключ к юукве
     def __change_let__():
+        """add code to letter"""
         pass
 
-    ### кодирование
     def code():
+        """code text"""
         pass
 
-    ### декодирование
     def decode():
+        """decode text"""
         pass
 
-### шифр Цезаря
 class Caesar(SimpleCode):
+    """Caesar code and decode class"""
 
     def __gen_key__(self) -> int:
-        return randint(0, Globals.MAX_KEY_CAESAR)
+        return randint(0, Globals.max_key_caesar)
 
     def __change_let__(self, l, key) -> str:
         alph = self.__def_alph__(l)
@@ -83,18 +84,17 @@ class Caesar(SimpleCode):
         key = int(key)
         return ''.join([self.__change_let__(l, key) for l in self.text])
 
-    ### доп функция для вывода всех возмозжных перестановок
     def show_all(self) -> list:
+        """all available permutations output"""
         for lan in self.__lang__.values():
             if list(filter(str.isalpha, list(self.text)))[0].lower() in lan[0]:
                 lf = lan[2]
         return [(self.decode(i), lf) for i in range(len(lf))]
 
-    ### взлом Цезаря методом частотного анализа
     def intel_hack(self) -> str:
-
-        ### подсчет метрики для перестановки. Меньше метрика - правильней ключ
+        """hack Caesar code with freq analysis"""
         def metric(string, lang) -> int:
+            """Metric for permutation. Less metric - more correct key"""
             count = Counter(string)
             freq = sum([abs(lang[l]-(count[l]/len(string))*100)
                        for l in lang.keys()])
@@ -107,12 +107,11 @@ class Caesar(SimpleCode):
         self.key = metrics.index(min(metrics))
         return self.decode()
 
-### Шифр Виженера
 class Vigenere(SimpleCode):
-
+    """Vigenere code and decode class"""
     def __gen_key__(self) -> str:
         lis = [chr(randint(ord('a'), ord('z')))
-               for i in range(randint(Globals.MIN_KEY_VIGENERE, Globals.MAX_KEY_VIGENERE))]
+               for i in range(randint(Globals.min_key_vigenere, Globals.max_key_vigenere))]
         return ''.join(lis)
 
     def __change_let__(self, pair) -> str:
@@ -140,28 +139,28 @@ class Vigenere(SimpleCode):
         pack = list(zip(self.text, key*(len(self.text)//len(key)+1)))
         return ''.join([self.__change_let__(pair) for pair in pack])
 
-###  Шифр Вернама
 class Vernam():
-
+    """Vernam code and decode class"""
     def __init__(self, text, key=None):
+        """Create new Vernam code unit"""
         self.text = text
         self.key = key
         if key and key[0].isalpha():
             self.key = ' '.join(str(ord(l)) for l in self.key)
 
-    ### сгенерировать ключ, если не задан
     def __gen_key__(self) -> str:
-        lis = [str(randint(0, Globals.MAX_KEY_VIGENERE)) for i in range(len(self.text))]
+        """generate new key"""
+        lis = [str(randint(0, Globals.max_key_vigenere)) for i in range(len(self.text))]
         return ' '.join(lis)
 
-    ### кодирование
     @key_map
     def code(self, key=None) -> str:
+        """code text"""
         pairs = list(zip(self.text, key.split()))
         return ' '.join([str(ord(pair[0]) ^ int(pair[1])) for pair in pairs])
 
-    ### декодирование
     @key_map
     def decode(self, key=None) -> str:
+        """decode text"""
         pairs = list(zip(self.text.split(), key.split()))
         return ''.join([chr(int(pair[0]) ^ int(pair[1])) for pair in pairs])

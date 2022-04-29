@@ -1,31 +1,32 @@
-### работа через приложение ###
+### work via GUI ###
 
 import tkinter as tk
 import src.launcher as launcher
 
-### набор, задающий параметры запуска
-class arg():
+class Arg():
+    """set of launch parameters"""
     key = None
     out = None
     inp = None
     mode = None
     scr = None
 
-### класс графического интерфейса
-class app():
+class App():
+    """GUI main class"""
     def __init__(self):
+        """create new app window"""
         self.window = tk.Tk()
         self.inpu = tk.StringVar()
         self.outpu = tk.StringVar()
         self.keyp = tk.StringVar()
-        self.ar = arg()
+        self.ar = Arg()
         self.code_type = tk.IntVar()
         self.window.title("CodeIt")
         self.window.geometry('380x110')
         self.interface()
 
-    ### запускает модуль в режиме кодирование
     def code(self):
+        """launch module as coder"""
         self.change()
         self.ar.mode = 'c'
         self.ar.inp = self.inpu.get()
@@ -33,8 +34,8 @@ class app():
         self.ar.key = self.keyp.get()
         launcher.use(self.ar)
 
-    ### запускает в режиме декодирования
     def decode(self):
+        """launch module as decoder"""
         self.change()
         self.ar.mode = 'd'
         self.ar.inp = self.inpu.get()
@@ -42,8 +43,8 @@ class app():
         self.ar.key = self.keyp.get()
         launcher.use(self.ar)
 
-    ### взлом цезаря
     def hack(self):
+        """lauch module in hacking mode"""
         self.change()
         self.ar.mode = 'h'
         self.ar.inp = self.inpu.get()
@@ -51,8 +52,8 @@ class app():
         self.ar.key = self.keyp.get()
         launcher.use(self.ar)
 
-    ### изменение типа кодирования нажатием кнопки
     def change(self):
+        """change code script by click"""
         if self.code_type.get() == 0:
             self.ar.scr = 'caesar'
         elif self.code_type.get() == 1:
@@ -60,8 +61,8 @@ class app():
         elif self.code_type.get() == 2:
             self.ar.scr = 'vernam'
 
-    ### расположение сетки интерфейса 
     def grid_create(self):
+        """GUI grid creating"""
         col = 0
         self.inl.grid(column=col, row=0)
         self.oul.grid(column=col, row=1)
@@ -79,8 +80,8 @@ class app():
         self.btn_code.grid(column=col, row=0)
         self.btn_decode.grid(column=col, row=1)
 
-    ### инициализация интерфейсаы
     def interface(self):
+        """GUI init function"""
         self.code_type.set(0)
         self.caesar = tk.Radiobutton(text="Caesar",
                                      variable=self.code_type, value=0)

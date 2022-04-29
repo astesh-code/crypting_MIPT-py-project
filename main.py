@@ -1,4 +1,4 @@
-### Отсюда происходит запуск консольного приложения ###
+### Console app is started here ###
 
 import src.console as console
 

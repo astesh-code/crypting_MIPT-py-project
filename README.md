@@ -5,7 +5,7 @@
  - [Vigenere ciphering](https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher);
  - [Vernam ciphering](https://en.wikipedia.org/wiki/Vernam_cipher);
  - Auto key generating;
- - Console and module usage
+ - Console, GUI(in dev) and module usage
 # Requirements
  - Python 3.6 and above;
  

@@ -1,5 +1,5 @@
 # Overview
-**CodeIt** is a small python module/utility performs different algorithms of ciphering or deciphering of _.txt_ files.
+**CodeIt** is a small python module/utility performs different algorithms of crypting and decrypting of _.txt_ files.
 # Features
  - [Ceasar ciphering and hacking with frequency analysis](https://en.wikipedia.org/wiki/Caesar_cipher);
  - [Vigenere ciphering](https://en.wikipedia.org/wiki/Vigen%C3%A8re_cipher);
@@ -20,24 +20,24 @@
     -i, --input               : Input txt file
     -o, --output              : Output txt file
  Optional arguments:
-  -k KEY, --key KEY           : File with a key. Optional argument for coding, obligatory for decoding
+  -k KEY, --key KEY           : File with a key. Optional argument for crypting (will be generated and written near _out.txt_ in case of absence), obligatory for decripting
  ```
 
 ## Usage examples
-Cipher with Caesar method. Original text in _in.txt_, key in _key.txt_, output will be in _out.txt_ :
+Crypt with Caesar method. Original text in _in.txt_, key in _key.txt_, output will be in _out.txt_ :
  ```
  python3 main.py -m c -t caesar -i in.txt -o out.txt -k key.txt
  ```
-Use Vernam method to cipher _input.txt_ file to _outplut.txt_. Key will be generated automatically and written to _key.txt_:
+Use Vernam method to crypt _input.txt_ file to _outplut.txt_. Key will be generated automatically and written to _key.txt_:
  ```
  python3 main.py --mode c --type vernam --input input.txt --output output.txt
  ```
-Decipher Vigenere-coding file with _key.txt_ key:
+Decrypt Vigenere-coded file with _key.txt_ key:
  ```
- python3 main.py -m d -type Vigenere -i in.txt -o out.txt -k key.txt
+ python3 main.py -m d -t Vigenere -i in.txt -o out.txt -k key.txt
  ```
-Attemplt to hack Caesar-ciphering file. Found key will be written to _key.txt_, text to _out.txt_:
+Attemplt to hack Caesar-crypted file. Found key will be written to _key.txt_, text to _out.txt_:
  ```
- python3 main.py -m h -type caesar -i in.txt -o out.txt
+ python3 main.py -m h -t caesar -i in.txt -o out.txt
  ```
 

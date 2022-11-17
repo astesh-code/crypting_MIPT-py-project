@@ -34,7 +34,7 @@ Use Vernam method to crypt _input.txt_ file to _outplut.txt_. Key will be genera
  ```
 Decrypt Vigenere-coded file with _key.txt_ key:
  ```
- python3 main.py -m d -t Vigenere -i in.txt -o out.txt -k key.txt
+ python3 main.py -m d -t vigenere -i in.txt -o out.txt -k key.txt
  ```
 Attemplt to hack Caesar-crypted file. Found key will be written to _key.txt_, text to _out.txt_:
  ```

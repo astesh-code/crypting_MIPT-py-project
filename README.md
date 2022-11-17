@@ -26,7 +26,7 @@
 ## Usage examples
 Cipher with Caesar method. Original text in _in.txt_, key in _key.txt_, output will be in _out.txt_ :
  ```
- python3 main.py -m c -type caesar -i in.txt -o out.txt -k key.txt
+ python3 main.py -m c -t caesar -i in.txt -o out.txt -k key.txt
  ```
 Use Vernam method to cipher _input.txt_ file to _outplut.txt_. Key will be generated automatically and written to _key.txt_:
  ```

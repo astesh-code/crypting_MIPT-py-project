@@ -7,10 +7,10 @@ def code(args, Temp):
     with open(args.out, 'w') as out:
         out.write(Temp.code())
     if args.key == None:
-        with open('/'.join(args.out.split('/')[0:-1])+'/'+'key.txt', 'w') as key:
+        with open(args.out[0:args.out.rfind('/')+1]+'key.txt', 'w') as key:
             key.write(str(Temp.key))
             print(
-                f"Key written to {'/'.join(args.out.split('/')[0:-1])+'/'+'key.txt'}")
+                f"Key written to {args.out[0:args.out.rfind('/')+1]+'key.txt'}")
 
 def decode(args, Temp):
     """launch module as decoder"""
@@ -22,10 +22,10 @@ def hack(args, Temp):
     with open(args.out, 'w') as out:
         out.write(str(Temp.intel_hack()))
     if args.key == None:
-        with open('/'.join(args.out.split('/')[0:-1])+'/'+'key.txt', 'w') as key:
+        with open(args.out[0:args.out.rfind('/')+1]+'key.txt') as key:
             key.write(str(Temp.key))
             print(
-                f"Key written to {'/'.join(args.out.split('/')[0:-1])+'/'+'key.txt'}")
+                f"Key written to {args.out[0:args.out.rfind('/')+1]+'key.txt'}")
 
 def use(args):
     """collect luanching data and transfer it"""
